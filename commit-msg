@@ -1,0 +1,34 @@
+#!/usr/bin/env node
+/* eslint-disable no-undef */
+const fs = require('fs');
+const process = require('process');
+const repositoryPath = path.resolve(__dirname, '../../');
+const AbstractHook = require(path.resolve(repositoryPath, './.git/hooks/common/AbstractHook.js'));
+const { logger } = require(path.resolve(repositoryPath, './.git/hooks/common/log.js'));
+
+class CommitMsgHook extends AbstractHook() {
+  constructor() {
+    super();
+  }
+
+  getHookName() {
+    return super.getHookName(__filename);
+  }
+
+  run() {
+    const commitMsgStoragePath = process.argv.slice(-1)[0];
+
+    try {
+      // 读取 commit
+      const commitMsg = fs.readFileSync(commitMsgStoragePath, 'utf8');
+
+      // 修改 commit
+      fs.writeFileSync(commitMsgStoragePath, `[linted]${commitMsg}`);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+}
+
+const hook = new CommitMsgHook();
+hook.run();
