@@ -2,11 +2,11 @@
 /* eslint-disable no-undef */
 const fs = require('fs');
 const process = require('process');
+const path = require('path');
 const repositoryPath = path.resolve(__dirname, '../../');
 const AbstractHook = require(path.resolve(repositoryPath, './.git/hooks/common/AbstractHook.js'));
-const { logger } = require(path.resolve(repositoryPath, './.git/hooks/common/log.js'));
 
-class CommitMsgHook extends AbstractHook() {
+class CommitMsgHook extends AbstractHook {
   constructor() {
     super();
   }

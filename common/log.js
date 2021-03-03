@@ -10,7 +10,7 @@ module.exports = {
   logger: {
     log: console.log.bind(null, LogTypeEnum.Log),
     error: console.log.bind(null, LogTypeEnum.Error),
-    warn: console.log.bind(null, LogTypeEnum.warn),
+    warn: console.log.bind(null, LogTypeEnum.Warn),
     success: console.log.bind(null, LogTypeEnum.Success),
   },
 };
