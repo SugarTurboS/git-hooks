@@ -5,6 +5,8 @@ const process = require('process');
 const path = require('path');
 const repositoryPath = path.resolve(__dirname, '../../');
 const AbstractHook = require(path.resolve(repositoryPath, './.git/hooks/common/AbstractHook.js'));
+const commitMessageStandardChecker = require('./common/CommitMessageStandard');
+const { logger } = require(path.resolve(repositoryPath, './.git/hooks/common/log.js'));
 
 class CommitMsgHook extends AbstractHook {
   constructor() {
@@ -21,6 +23,14 @@ class CommitMsgHook extends AbstractHook {
     try {
       // 读取 commit
       const commitMsg = fs.readFileSync(commitMsgStoragePath, 'utf8');
+
+      // 检查 commit msg 规范
+      const result = commitMessageStandardChecker(commitMsg);
+
+      if (!result.isPass) {
+        logger.error(`commitMessage-不符合规范-缺少：+ ${result.missKeywords.join(',')}`);
+        process.exit(1);
+      }
 
       // 修改 commit
       fs.writeFileSync(commitMsgStoragePath, `[linted]${commitMsg}`);
