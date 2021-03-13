@@ -17,7 +17,7 @@ export default [
         extensions: ['.js', '.ts'],
       }),
       copy({
-        targets: [{ src: ['assets/*'], dest: 'dist/' }],
+        targets: [{ src: ['assets/git-hooks/*'], dest: 'dist/' }],
       }),
     ],
   },
