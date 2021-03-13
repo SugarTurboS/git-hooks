@@ -1,0 +1,15 @@
+#!/usr/bin/env node
+/* eslint-disable no-undef */
+
+const path = require('path');
+
+// 安装到的仓库的地址
+const repositoryPath = path.resolve(__dirname, '../../');
+// 配置文件的地址
+const configPath = path.resolve(repositoryPath, './.git/hooks/gh.json');
+
+// 读取当前配置
+const config = require(configPath);
+// 根据当前配置执行对应模板的文件
+const templatePath = path.resolve(repositoryPath, './.git/hooks/templates/', config.template, 'pre-commit.js');
+require(templatePath);

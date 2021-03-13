@@ -1,25 +1,12 @@
-#!/usr/bin/env node
-/* eslint-disable no-undef */
-
-const process = require('process');
 const { exec } = require('child_process');
-const path = require('path');
+const GhCore = require('../../git-hooks-new.js');
+const { ESLint } = require('eslint');
 
-const repositoryPath = path.resolve(__dirname, '../../');
-const AbstractHook = require(path.resolve(repositoryPath, './.git/hooks/common/AbstractHook.js'));
-const EslintMiddleware = require(path.resolve(
-  repositoryPath,
-  './.git/hooks/common/EslintMiddleware.js'
-));
-const { logger } = require(path.resolve(repositoryPath, './.git/hooks/common/log.js'));
-
-class PreCommitHook extends AbstractHook {
+class PreCommitHook {
   constructor() {
-    super();
-  }
-
-  getHookName() {
-    return super.getHookName(__filename);
+    this.core = new GhCore({
+      whiteList: ['eslint-plugin'],
+    });
   }
 
   run() {
@@ -49,9 +36,13 @@ class PreCommitHook extends AbstractHook {
       });
     });
   }
+
   _lintFileList(fileList) {
-    const eslint = new EslintMiddleware({ fileList, logger });
-    return eslint.lintFiles().then(eslint.output.bind(eslint));
+    const eslintPlugin = this.core['eslint-plugin'];
+    eslintPlugin.setFileList(fileList);
+    return eslintPlugin.lintFiles(new ESLint()).then(() => {
+      eslintPlugin.output();
+    });
   }
 }
 

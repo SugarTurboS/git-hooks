@@ -1,0 +1,9 @@
+node_modules
+logs
+dist
+run
+.DS_Store
+**/*/.DS_Store
+esm
+lib
+types
