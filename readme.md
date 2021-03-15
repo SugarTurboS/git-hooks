@@ -85,12 +85,11 @@ const GhCore = require('../../git-hooks-new.js');
 class CommitMsgHook {
   constructor() {
     // 实例化插件
-    this.core = new GhCore({
-      whiteList: ['commit-check-plugin'],
-    });
+    this.core = new GhCore();
   }
   run() {
     // 调用插件逻辑
+    // commit-message-plugin是内置插件
     this.core['commit-message-plugin'].setCommitMsgStoragePath(commitMsgStoragePath);
   }
 }
